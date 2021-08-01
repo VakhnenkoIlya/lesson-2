@@ -1,19 +1,24 @@
+using Moq;
 using System;
-using Lesson2ASP;
+using Xunit;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Lesson2ASP.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Xunit;
-
 
 namespace TestManegerMetric
 {
     public class AgentsControllerUnitTests
     {
-        private AgentsController controller;
-
+        private readonly AgentsController controller;
+      
+        private readonly Mock<ILogger<AgentsController>> mockLogger;
         public AgentsControllerUnitTests()
         {
-            controller = new AgentsController();
+            
+            mockLogger = new Mock<ILogger<AgentsController>>();
+            controller = new AgentsController(mockLogger.Object);
+
         }
 
         [Fact]

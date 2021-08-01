@@ -19,6 +19,9 @@ namespace Lesson2ASP.Controllers
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в AgentsMetricsController");
         }
+
+      
+
         private readonly static List<AgentInfo> _OfAgent = new();
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)

@@ -24,6 +24,7 @@ namespace MetricAgent.Controllers
             _logger.LogDebug(1, "NLog встроен в NetworkMetricsController");
             this.repository = repository;
         }
+
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetNetwork(TimeSpan fromTime, TimeSpan toTime)
         {
@@ -34,7 +35,7 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<NetworkMetricDto>()
             };
-
+            if (metrics!=null)
             foreach (var metric in metrics)
             {
                 response.Metrics.Add(new NetworkMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });

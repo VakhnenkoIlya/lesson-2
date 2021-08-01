@@ -25,6 +25,9 @@ namespace MetricAgent.Controllers
             _logger.LogDebug(1, "NLog встроен в DotNetMetricsController");
             this.repository = repository;
         }
+
+     
+
         [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
         public IActionResult GetEror(TimeSpan fromTime, TimeSpan toTime)
         {
@@ -36,7 +39,7 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<DotNetMetricDto>()
             };
-
+            if (metrics!=null)
             foreach (var metric in metrics)
             {
                 response.Metrics.Add(new DotNetMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });

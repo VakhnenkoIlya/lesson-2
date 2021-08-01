@@ -24,6 +24,9 @@ namespace MetricAgent.Controllers
             _logger.LogDebug(1, "NLog встроен в HddMetricsController");
             this.repository = repository;
         }
+
+        
+
         [HttpGet("left/from/{fromTime}/to/{toTime}")]
         public IActionResult GetHdd(TimeSpan fromTime, TimeSpan toTime)
         {
@@ -35,7 +38,7 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<HddMetricDto>()
             };
-
+            if (metrics!=null)
             foreach (var metric in metrics)
             {
                 response.Metrics.Add(new HddMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });

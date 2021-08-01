@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using NLog.Web;
-
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+
 
 namespace Lesson2ASP.Controllers
 {
@@ -15,6 +11,7 @@ namespace Lesson2ASP.Controllers
     public class CpuMetricsController : ControllerBase
     {
         private readonly ILogger<CpuMetricsController> _logger;
+
 
         public CpuMetricsController(ILogger<CpuMetricsController> logger)
         {

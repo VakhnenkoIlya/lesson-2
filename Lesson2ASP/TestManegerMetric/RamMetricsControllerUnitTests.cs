@@ -1,18 +1,24 @@
+using Moq;
 using System;
+using Xunit;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Lesson2ASP.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Xunit;
-
 
 namespace TestManegerMetric
 {
     public class RamMetricsControllerUnitTests
     {
-        private RamMetricsController controller;
+        private readonly RamMetricsController controller;
 
+        private readonly Mock<ILogger<RamMetricsController>> mockLogger;
         public RamMetricsControllerUnitTests()
         {
-            controller = new RamMetricsController();
+
+            mockLogger = new Mock<ILogger<RamMetricsController>>();
+            controller = new RamMetricsController(mockLogger.Object);
+
         }
 
         [Fact]

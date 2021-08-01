@@ -24,6 +24,9 @@ namespace MetricAgent.Controllers
             _logger.LogDebug(1, "NLog встроен в RamMetricsController");
             this.repository = repository;
         }
+
+      
+
         [HttpGet("available/from/{fromTime}/to/{toTime}")]
         public IActionResult GetAvailable(TimeSpan fromTime, TimeSpan toTime)
         {
@@ -34,7 +37,7 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<RamMetricDto>()
             };
-
+            if (metrics!=null)
             foreach (var metric in metrics)
             {
                 response.Metrics.Add(new RamMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
