@@ -66,11 +66,10 @@ namespace TestAgent
             var result = controller.GetAll();
 
 
-            // проверяем заглушку на то, что пока работал контроллер
+            // проверяем заглушку на то, что пока работал контроллер.
             // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
             mockRepository.Verify(repository => repository.GetAll());
         }
-
     }
 }
 
