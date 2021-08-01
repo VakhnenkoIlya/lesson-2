@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lesson2ASP", "Lesson2ASP\Lesson2ASP.csproj", "{10FE511D-A558-4245-9460-F2BF596C6676}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestManegerMetric", "TestManegerMetric\TestManegerMetric.csproj", "{884197EC-9DC5-4A4E-8F7A-735354D1DC3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestManegerMetric", "TestManegerMetric\TestManegerMetric.csproj", "{884197EC-9DC5-4A4E-8F7A-735354D1DC3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricAgent", "MetricAgent\MetricAgent.csproj", "{9DCEC6BB-5C4F-4960-A399-3877C8242640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricAgent", "MetricAgent\MetricAgent.csproj", "{9DCEC6BB-5C4F-4960-A399-3877C8242640}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAgent", "TestAgent\TestAgent.csproj", "{FE36F8E4-CB04-4F4F-BDC7-0744DE58C6B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestAgent", "TestAgent\TestAgent.csproj", "{FE36F8E4-CB04-4F4F-BDC7-0744DE58C6B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
