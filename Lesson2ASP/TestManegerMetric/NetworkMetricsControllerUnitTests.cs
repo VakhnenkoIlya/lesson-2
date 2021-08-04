@@ -1,18 +1,24 @@
+using Moq;
 using System;
+using Xunit;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Lesson2ASP.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Xunit;
-
 
 namespace TestManegerMetric
 {
-    public class HddMetricsControllerUnitTests
+    public class NetworkMetricsControllerUnitTests
     {
-        private HddMetricsController controller;
+        private readonly NetworkMetricsController controller;
 
-        public HddMetricsControllerUnitTests()
+        private readonly Mock<ILogger<NetworkMetricsController>> mockLogger;
+        public NetworkMetricsControllerUnitTests()
         {
-            controller = new HddMetricsController();
+
+            mockLogger = new Mock<ILogger<NetworkMetricsController>>();
+            controller = new NetworkMetricsController(mockLogger.Object);
+
         }
 
         [Fact]

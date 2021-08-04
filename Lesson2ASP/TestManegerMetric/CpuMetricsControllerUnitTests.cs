@@ -1,18 +1,24 @@
+using Moq;
 using System;
+using Xunit;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Lesson2ASP.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Xunit;
-
 
 namespace TestManegerMetric
 {
-    public class DotNetMetricsControllerUnitTests
+    public class CpuMetricsControllerUnitTests
     {
-        private DotNetMetricsController controller;
+        private readonly CpuMetricsController controller;
 
-        public DotNetMetricsControllerUnitTests()
+        private readonly Mock<ILogger<CpuMetricsController>> mockLogger;
+        public CpuMetricsControllerUnitTests()
         {
-            controller = new DotNetMetricsController();
+
+            mockLogger = new Mock<ILogger<CpuMetricsController>>();
+            controller = new CpuMetricsController(mockLogger.Object);
+
         }
 
         [Fact]
@@ -29,8 +35,6 @@ namespace TestManegerMetric
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
-
-       
         [Fact]
         public void GetMetricsFromAllCluster()
         {
