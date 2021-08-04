@@ -11,6 +11,7 @@ using MetricsAgent.DAL;
 using MetricAgent.Requests;
 using MetricAgent.Responses;
 using Moq;
+using AutoMapper;
 
 namespace MetricAgent.Controllers
 {
@@ -18,36 +19,18 @@ namespace MetricAgent.Controllers
     [ApiController]
     public class CpuMetricsController : ControllerBase
     {
-
-        [HttpGet("sql-test")]
-        public IActionResult TryToSqlLite()
-        {
-            string cs = "Data Source=:memory:";
-            string stm = "SELECT SQLITE_VERSION()";
-
-
-            using (var con = new SQLiteConnection(cs))
-            {
-                con.Open();
-
-                using var cmd = new SQLiteCommand(stm, con);
-                string version = cmd.ExecuteScalar().ToString();
-
-                return Ok(version);
-            }
-        }
-
         private ICpuMetricsRepository repository;
         private readonly ILogger<CpuMetricsController> _logger;
+        private readonly IMapper mapper;
 
-        
-        public CpuMetricsController(ILogger<CpuMetricsController> logger, ICpuMetricsRepository repository)
+        public CpuMetricsController(ILogger<CpuMetricsController> logger, ICpuMetricsRepository repository, IMapper mapper)
 
 
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
             
         }
 
@@ -63,12 +46,12 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<CpuMetricDto>()
             };
-            if (metrics != null)
+       
 
                 foreach (var metric in metrics)
-            {
-                response.Metrics.Add(new CpuMetricDto { Time = (TimeSpan)metric.Time, Value = metric.Value, Id = metric.Id });
-            }
+                {
+                    response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
+                }
 
             return Ok(response);
         }
@@ -95,11 +78,11 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<CpuMetricDto>()
             };
-            if (metrics != null)
+           
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new CpuMetricDto { Time = (TimeSpan)metric.Time, Value = metric.Value, Id = metric.Id });
+                    response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
             }
 
             return Ok(response);

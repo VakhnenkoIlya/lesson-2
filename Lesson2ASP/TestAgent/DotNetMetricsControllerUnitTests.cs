@@ -12,6 +12,7 @@ using Xunit;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using MetricAgent;
+using AutoMapper;
 
 namespace TestAgent
 {
@@ -20,13 +21,15 @@ namespace TestAgent
         private readonly DotNetMetricsController controller;
         private readonly Mock<IDotNetMetricsRepository> mockRepository;
         private readonly Mock<ILogger<DotNetMetricsController>> mockLogger;
-       
+        private readonly Mock<IMapper> mockMapper;
+
 
         public DotNetMetricsControllerUnitTests()
         {
             mockRepository = new Mock<IDotNetMetricsRepository>();
             mockLogger = new Mock<ILogger<DotNetMetricsController>>();
-            controller = new DotNetMetricsController(mockLogger.Object, mockRepository.Object);
+            mockMapper = new Mock<IMapper>();
+            controller = new DotNetMetricsController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
         }
 
         [Fact]
@@ -34,7 +37,7 @@ namespace TestAgent
         {
             // устанавливаем параметр заглушки
             // в заглушке прописываем что в репозиторий прилетит  объект
-            mockRepository.Setup(repository => repository.GetByTimePeriod(It.IsAny<TimeSpan>(), It.IsAny<TimeSpan>())).Verifiable();
+            mockRepository.Setup(repository => repository.GetByTimePeriod(It.IsAny<TimeSpan>(), It.IsAny<TimeSpan>())).Returns(new List<DotNetMetric>()); 
 
             // выполняем действие на контроллере
             var result = controller.GetEror(new TimeSpan(0, 0, 1), new TimeSpan(0, 0, 50));
@@ -58,6 +61,21 @@ namespace TestAgent
             // проверяем заглушку на то, что пока работал контроллер
             // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
             mockRepository.Verify(repository => repository.Create(It.IsAny<DotNetMetric>()), Times.AtMostOnce());
+        }
+        [Fact]
+        public void Create_ShouldCall_GetAll_From_Repository()
+        {
+            // устанавливаем параметр заглушки
+            // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
+            mockRepository.Setup(repository => repository.GetAll()).Returns(new List<DotNetMetric>()); 
+
+            // выполняем действие на контроллере
+            var result = controller.GetAll();
+
+
+            // проверяем заглушку на то, что пока работал контроллер.
+            // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
+            mockRepository.Verify(repository => repository.GetAll());
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MetricAgent.Requests;
 using MetricAgent.Responses;
 using MetricsAgent.DAL;
+using AutoMapper;
 
 namespace MetricAgent.Controllers
 {
@@ -17,16 +18,14 @@ namespace MetricAgent.Controllers
     {
         private IHddMetricsRepository repository;
         private readonly ILogger<HddMetricsController> _logger;
-
-        public HddMetricsController(ILogger<HddMetricsController> logger, IHddMetricsRepository repository)
+        private readonly IMapper mapper;
+        public HddMetricsController(ILogger<HddMetricsController> logger, IHddMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в HddMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
-
-        
-
         [HttpGet("left/from/{fromTime}/to/{toTime}")]
         public IActionResult GetHdd(TimeSpan fromTime, TimeSpan toTime)
         {
@@ -38,10 +37,10 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<HddMetricDto>()
             };
-            if (metrics!=null)
+            
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new HddMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<HddMetricDto>(metric));
             }
 
             return Ok(response);
@@ -57,6 +56,24 @@ namespace MetricAgent.Controllers
             });
 
             return Ok();
+        }
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            var metrics = repository.GetAll();
+
+            var response = new AllHddMetricsResponse()
+            {
+                Metrics = new List<HddMetricDto>()
+            };
+
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(mapper.Map<HddMetricDto>(metric));
+            }
+
+            return Ok(response);
         }
     }
 }
