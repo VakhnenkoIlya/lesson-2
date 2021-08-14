@@ -30,7 +30,7 @@ namespace MetricAgent.Controllers
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetNetwork(TimeSpan fromTime, TimeSpan toTime)
         {
-            _logger.LogInformation($"GetNetwork с параметрами fromTime{fromTime} toTime{toTime}");
+            _logger.LogInformation($"GetNetwork с параметрами fromTime {fromTime} toTime {toTime}");
             var metrics = repository.GetByTimePeriod(fromTime, toTime);
 
             var response = new AllNetworkMetricsResponse
@@ -49,17 +49,17 @@ namespace MetricAgent.Controllers
 
         public IActionResult Create([FromBody] NetworkMetricCreateRequest request)
         {
-            repository.Create(new NetworkMetric
-            {
-                Time = TimeSpan.Parse(request.Time),
-                Value = request.Value
-            });
+            _logger.LogInformation($"Create с параметрами Time = {TimeSpan.Parse(request.Time)}  Value = {request.Value}");
+
+            repository.Create(mapper.Map<NetworkMetric>(request));
 
             return Ok();
         }
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            _logger.LogInformation($"GetAll");
+
             var metrics = repository.GetAll();
 
             var response = new AllNetworkMetricsResponse()

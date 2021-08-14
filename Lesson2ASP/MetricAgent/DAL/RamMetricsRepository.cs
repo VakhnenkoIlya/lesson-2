@@ -7,17 +7,20 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using MetricsAgent.DAL;
+using Microsoft.Extensions.Configuration;
 
 namespace MetricAgent.DAL
 {
     public class RamMetricsRepository : IRamMetricsRepository
     {
-        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+        private string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
         // инжектируем соединение с базой данных в наш репозиторий через конструктор
-        public RamMetricsRepository()
+        public RamMetricsRepository(IConfiguration configuration)
         {
             // добавляем парсилку типа TimeSpan в качестве подсказки для SQLite
             SqlMapper.AddTypeHandler(new TimeSpanHandler());
+            ConnectionString = configuration.GetConnectionString("Metrics");
+
         }
         public void Create(RamMetric item)
         {

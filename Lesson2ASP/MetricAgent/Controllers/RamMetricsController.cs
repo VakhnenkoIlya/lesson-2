@@ -34,7 +34,7 @@ namespace MetricAgent.Controllers
         [HttpGet("available/from/{fromTime}/to/{toTime}")]
         public IActionResult GetAvailable(TimeSpan fromTime, TimeSpan toTime)
         {
-            _logger.LogInformation($"GetAvailable с параметрами fromTime{fromTime} toTime{toTime}");
+            _logger.LogInformation($"GetAvailable с параметрами fromTime {fromTime} toTime {toTime}");
             var metrics = repository.GetByTimePeriod(fromTime, toTime);
 
             var response = new AllRamMetricsResponse
@@ -53,17 +53,17 @@ namespace MetricAgent.Controllers
 
         public IActionResult Create([FromBody] RamMetricCreateRequest request)
         {
-            repository.Create(new RamMetric
-            {
-                Time = TimeSpan.Parse(request.Time),
-                Value = request.Value
-            });
+            _logger.LogInformation($"Create с параметрами Time = {TimeSpan.Parse(request.Time)}  Value = {request.Value}");
+
+            repository.Create(mapper.Map<RamMetric>(request));
 
             return Ok();
         }
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            _logger.LogInformation($"GetAll");
+
             var metrics = repository.GetAll();
 
             var response = new AllRamMetricsResponse()
