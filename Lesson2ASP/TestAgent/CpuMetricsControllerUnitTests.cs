@@ -12,20 +12,23 @@ using System;
 using Xunit;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace TestAgent
 {
     public class CpuMetricsControllerUnitTests
     {
         private readonly CpuMetricsController controller;
+        private readonly Mock<IMapper> mockMapper;
         private readonly Mock<ICpuMetricsRepository> mockRepository;
         private readonly Mock<ILogger<CpuMetricsController>> mockLogger;
         public CpuMetricsControllerUnitTests()
         {
             mockRepository = new Mock<ICpuMetricsRepository>();
             mockLogger = new Mock<ILogger<CpuMetricsController>>();
-            controller = new CpuMetricsController(mockLogger.Object, mockRepository.Object);
-
+            mockMapper = new Mock<IMapper>();
+            controller = new CpuMetricsController(mockLogger.Object, mockRepository.Object, mockMapper.Object);
+          
         }
         [Fact]
         public void Create_ShouldCall_Create_From_Repository()
@@ -45,7 +48,7 @@ namespace TestAgent
         {
             // устанавливаем параметр заглушки
             // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
-            mockRepository.Setup(repository => repository.GetByTimePeriod(It.IsAny<TimeSpan>(), It.IsAny<TimeSpan>())).Verifiable();
+            mockRepository.Setup(repository => repository.GetByTimePeriod(It.IsAny<TimeSpan>(), It.IsAny<TimeSpan>())).Returns(new List<CpuMetric>()); 
 
             // выполняем действие на контроллере
             var result = controller.GetMetrics(new TimeSpan(0, 0, 1), new TimeSpan(0, 0, 50));
@@ -60,7 +63,7 @@ namespace TestAgent
         {
             // устанавливаем параметр заглушки
             // в заглушке прописываем что в репозиторий прилетит CpuMetric объект
-            mockRepository.Setup(repository => repository.GetAll());
+            mockRepository.Setup(repository => repository.GetAll()).Returns(new List<CpuMetric>()); ;
 
             // выполняем действие на контроллере
             var result = controller.GetAll();

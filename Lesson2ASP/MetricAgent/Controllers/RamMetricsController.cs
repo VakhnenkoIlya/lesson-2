@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using MetricAgent.Requests;
 using MetricAgent.Responses;
 using MetricsAgent.DAL;
+using AutoMapper;
 
 namespace MetricAgent.Controllers
 {
@@ -17,12 +19,14 @@ namespace MetricAgent.Controllers
     {
         private IRamMetricsRepository repository;
         private readonly ILogger<RamMetricsController> _logger;
+        private readonly IMapper mapper;
 
-        public RamMetricsController(ILogger<RamMetricsController> logger, IRamMetricsRepository repository)
+        public RamMetricsController(ILogger<RamMetricsController> logger, IRamMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в RamMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
       
@@ -37,10 +41,10 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<RamMetricDto>()
             };
-            if (metrics!=null)
+            
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new RamMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<RamMetricDto>(metric));
             }
 
             return Ok(response);
@@ -56,6 +60,24 @@ namespace MetricAgent.Controllers
             });
 
             return Ok();
+        }
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            var metrics = repository.GetAll();
+
+            var response = new AllRamMetricsResponse()
+            {
+                Metrics = new List<RamMetricDto>()
+            };
+
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(mapper.Map<RamMetricDto>(metric));
+            }
+
+            return Ok(response);
         }
     }
 }

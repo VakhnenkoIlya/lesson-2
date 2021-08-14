@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MetricAgent.Responses;
 using MetricAgent.Requests;
 using MetricsAgent.DAL;
+using AutoMapper;
 
 namespace MetricAgent.Controllers
 {
@@ -17,12 +18,13 @@ namespace MetricAgent.Controllers
     {
         private INetworkMetricsRepository repository;
         private readonly ILogger<NetworkMetricsController> _logger;
-
-        public NetworkMetricsController(ILogger<NetworkMetricsController> logger, INetworkMetricsRepository repository)
+        private readonly IMapper mapper;
+        public NetworkMetricsController(ILogger<NetworkMetricsController> logger, INetworkMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в NetworkMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
@@ -35,10 +37,10 @@ namespace MetricAgent.Controllers
             {
                 Metrics = new List<NetworkMetricDto>()
             };
-            if (metrics!=null)
+        
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new NetworkMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<NetworkMetricDto>(metric));
             }
 
             return Ok(response);
@@ -54,6 +56,24 @@ namespace MetricAgent.Controllers
             });
 
             return Ok();
+        }
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            var metrics = repository.GetAll();
+
+            var response = new AllNetworkMetricsResponse()
+            {
+                Metrics = new List<NetworkMetricDto>()
+            };
+
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(mapper.Map<NetworkMetricDto>(metric));
+            }
+
+            return Ok(response);
         }
     }
 }
