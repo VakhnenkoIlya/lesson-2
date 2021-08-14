@@ -32,7 +32,7 @@ namespace MetricAgent.Controllers
         [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
         public IActionResult GetEror(TimeSpan fromTime, TimeSpan toTime)
         {
-            _logger.LogInformation($"GetEror с параметрами fromTime{fromTime} toTime{toTime}");
+            _logger.LogInformation($"GetEror с параметрами fromTime {fromTime} toTime {toTime}");
 
             var metrics = repository.GetByTimePeriod(fromTime, toTime);
 
@@ -53,17 +53,17 @@ namespace MetricAgent.Controllers
 
         public IActionResult Create([FromBody] DotNetMetricCreateRequest request)
         {
-            repository.Create(new DotNetMetric
-            {
-                Time = TimeSpan.Parse(request.Time),
-                Value = request.Value
-            });
+            _logger.LogInformation($"Create с параметрами Time = {TimeSpan.Parse(request.Time)}  Value = {request.Value}");
+           
+            repository.Create(mapper.Map<DotNetMetric>(request));
 
             return Ok();
         }
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            _logger.LogInformation($"GetAll");
+
             var metrics = repository.GetAll();
 
             var response = new AllDotNetMetricsResponse()

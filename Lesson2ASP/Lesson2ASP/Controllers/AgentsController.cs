@@ -27,14 +27,14 @@ namespace Lesson2ASP.Controllers
         public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
         {
             _OfAgent.Add(agentInfo);
-            _logger.LogInformation($"RegisterAgent с параметрами agentId{agentInfo} agentAdress{agentInfo}");
+            _logger.LogInformation($"RegisterAgent с параметрами agentId {agentInfo} agentAdress {agentInfo}");
             return Ok();
         }
 
         [HttpPut("enable/{agentId}")]
         public IActionResult EnableAgentById([FromRoute] int agentId)
         {
-            _logger.LogInformation($"EnableAgentById с параметрами agentId{agentId}");
+            _logger.LogInformation($"EnableAgentById с параметрами agentId {agentId}");
             return Ok();
         }
         [HttpGet]
@@ -48,7 +48,7 @@ namespace Lesson2ASP.Controllers
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
         {
-            _logger.LogInformation($"DisableAgentById с параметрами agentId{agentId}");
+            _logger.LogInformation($"DisableAgentById с параметрами agentId {agentId}");
             return Ok();
         }
     }

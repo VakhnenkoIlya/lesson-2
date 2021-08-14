@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using System.Data.SQLite;
-
 using MetricsAgent.DAL;
 using MetricAgent.Requests;
 using MetricAgent.Responses;
-using Moq;
 using AutoMapper;
 
 namespace MetricAgent.Controllers
@@ -38,7 +32,7 @@ namespace MetricAgent.Controllers
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetrics(TimeSpan fromTime, TimeSpan toTime)
         {
-            _logger.LogInformation($"GetMetrics с параметрами fromTime{fromTime} toTime{toTime}");
+            _logger.LogInformation($"GetMetrics с параметрами fromTime {fromTime} toTime {toTime}");
             
             var metrics = repository.GetByTimePeriod(fromTime, toTime);
 
@@ -59,19 +53,19 @@ namespace MetricAgent.Controllers
         [HttpPost("create")]
         public IActionResult Create([FromBody] CpuMetricCreateRequest request)
         {
-            repository.Create(new CpuMetric
-            {
-                Time = request.Time,
-                Value = request.Value
-                
-            });
+            _logger.LogInformation($"Create с параметрами Time { request.Time} Value  {request.Value}");
+            var response = new AllCpuMetricsResponse();
 
+            repository.Create(mapper.Map<CpuMetric>(request));
+             
             return Ok();
         }
 
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            _logger.LogInformation($"GetAll");
+
             var metrics = repository.GetAll();
 
             var response = new AllCpuMetricsResponse()

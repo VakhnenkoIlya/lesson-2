@@ -5,6 +5,7 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MetricAgent.Requests;
 
 namespace MetricAgent
 {
@@ -20,6 +21,12 @@ namespace MetricAgent
                 CreateMap<HddMetric, HddMetricDto>();
                 CreateMap<NetworkMetric, NetworkMetricDto>();
                 CreateMap<HddMetric, HddMetricDto>();
+                CreateMap<RamMetric, RamMetricDto>();
+            CreateMap<CpuMetricCreateRequest, CpuMetric>();
+            CreateMap<DotNetMetricCreateRequest, DotNetMetric>();
+            CreateMap<HddMetricCreateRequest, HddMetric>();
+            CreateMap<NetworkMetricCreateRequest, NetworkMetric>();
+            CreateMap<RamMetricCreateRequest, RamMetric>();
             }
         }
     

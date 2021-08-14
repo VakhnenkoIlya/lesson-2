@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MetricsAgent.DAL;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -9,12 +10,13 @@ namespace MetricAgent.DAL
 {
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
-        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+        string ConnectionString;  //"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
         // инжектируем соединение с базой данных в наш репозиторий через конструктор
-        public CpuMetricsRepository()
+        public CpuMetricsRepository(IConfiguration configuration)
         {
             // добавляем парсилку типа TimeSpan в качестве подсказки для SQLite
             SqlMapper.AddTypeHandler(new TimeSpanHandler());
+            ConnectionString = configuration.GetConnectionString("Metrics");
         }
 
 

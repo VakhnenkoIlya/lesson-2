@@ -22,14 +22,14 @@ namespace Lesson2ASP.Controllers
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] int agentId, [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
-            _logger.LogInformation($"GetMetricsFromAgent с параметрами agentId{agentId} fromTime{fromTime} toTime{toTime}");
+            _logger.LogInformation($"GetMetricsFromAgent с параметрами agentId {agentId} fromTime {fromTime} toTime {toTime}");
             return Ok();
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAllCluster([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
-            _logger.LogInformation($"GetMetricsFromAllCluster с параметрами fromTime{fromTime} toTime{toTime}");
+            _logger.LogInformation($"GetMetricsFromAllCluster с параметрами fromTime {fromTime} toTime {toTime}");
             return Ok();
         }
     }
